@@ -4,12 +4,14 @@ class Solution:
         ans = []
         left, right = 0, len(nums) - 1
         last = 'left'
+        stored = []
         while left != right:
             leftin = left + 1
             rightin = right - 1
             while leftin < rightin:
                 if nums[left] + nums[right] + nums[leftin] + nums[rightin] == target:
-                    ans.append([nums[left], nums[right], nums[leftin], nums[rightin]])
+                    if [left, right, leftin, rightin] not in stored:
+                        ans.append([nums[left], nums[right], nums[leftin], nums[rightin]])
                     leftin += 1
                 elif nums[left] + nums[right] + nums[leftin] + nums[rightin] > target:
                     rightin -= 1
@@ -21,7 +23,7 @@ class Solution:
             else:
                 last = 'left'
                 left += 1
-        return set(ans)
+        return ans
 
 
-print(Solution.fourSum(Solution, [1,0,-1,0,-2,2], 0))
+print(Solution.fourSum(Solution, [2,2,2,2,2], 8))
