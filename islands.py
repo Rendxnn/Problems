@@ -59,7 +59,6 @@ def search_island(matrix, i, j, memo, num_island, cant_islas):
 
 
 def construir_puentes(matrix, islas):
-    print(islas)
     caminos = buscar_puentes(matrix, islas)
     contador_puente = 0
     for camino in caminos:
@@ -72,122 +71,58 @@ def construir_puentes(matrix, islas):
         while (x_actual, y_actual) != (x_destino, y_destino):
             opc = []
             mejor_valor, mejor_opcion = float('inf'), None
-            if 0 <= x_actual + 1 < len(matrix):
-                x_vecino, y_vecino = x_actual + 1, y_actual
-                posicion_vecino = (x_actual + 1, y_actual)
-                casilla_vecino = matrix[x_actual + 1][y_actual]
-                if posicion_vecino not in visitados:
-                    # si el vecino es la isla destino
-                    if posicion_vecino in islas and islas[posicion_vecino] == islas[destino]:
-                        mejor_valor = -float('inf')
-                        opc.append(mejor_valor)
-                        mejor_opcion = posicion_vecino
-
-                    # si el vecino no es una isla
-                    if posicion_vecino not in islas:
-                        distancia_vecino = abs(x_destino - x_vecino) + abs(y_destino - y_vecino)
-                        valor_vecino = distancia_vecino + abs(casilla_vecino)
-                        opc.append([valor_vecino, posicion_vecino])
-                        if valor_vecino < mejor_valor:
-                            mejor_valor = valor_vecino
+            for i in range(-1, 2, 2):
+                if 0 <= x_actual + i < len(matrix):
+                    x_vecino, y_vecino = x_actual + i, y_actual
+                    posicion_vecino = (x_actual + i, y_actual)
+                    casilla_vecino = matrix[x_actual + i][y_actual]
+                    if posicion_vecino not in visitados:
+                        # si el vecino es la isla destino
+                        if posicion_vecino in islas and islas[posicion_vecino] == islas[destino]:
+                            mejor_valor = -float('inf')
                             mejor_opcion = posicion_vecino
 
-                    # si el vecino es de la misma isla
-                    if posicion_vecino in islas and actual in islas and islas[posicion_vecino] == islas[actual]:
-                        distancia_vecino = abs(x_destino - x_vecino) + abs(y_destino - y_vecino)
-                        valor_vecino = distancia_vecino
-                        opc.append([valor_vecino, posicion_vecino])
-                        if valor_vecino < mejor_valor:
-                            mejor_valor = valor_vecino
+                        # si el vecino no es una isla
+                        if posicion_vecino not in islas:
+                            distancia_vecino = abs(x_destino - x_vecino) + abs(y_destino - y_vecino)
+                            valor_vecino = distancia_vecino + abs(casilla_vecino)
+                            if valor_vecino < mejor_valor:
+                                mejor_valor = valor_vecino
+                                mejor_opcion = posicion_vecino
+
+                        # si el vecino es de la misma isla
+                        if posicion_vecino in islas and actual in islas and islas[posicion_vecino] == islas[actual]:
+                            distancia_vecino = abs(x_destino - x_vecino) + abs(y_destino - y_vecino)
+                            valor_vecino = distancia_vecino
+                            if valor_vecino < mejor_valor:
+                                mejor_valor = valor_vecino
+                                mejor_opcion = posicion_vecino
+
+                if 0 <= y_actual + i < len(matrix):
+                    x_vecino, y_vecino = x_actual, y_actual + i
+                    posicion_vecino = (x_actual, y_actual + i)
+                    casilla_vecino = matrix[x_actual][y_actual + i]
+                    if posicion_vecino not in visitados:
+                        # si el vecino es la isla destino
+                        if posicion_vecino in islas and islas[posicion_vecino] == islas[destino]:
+                            mejor_valor = -float('inf')
                             mejor_opcion = posicion_vecino
 
-            if 0 <= x_actual - 1 < len(matrix):
-                x_vecino, y_vecino = x_actual - 1, y_actual
-                posicion_vecino = (x_actual - 1, y_actual)
-                casilla_vecino = matrix[x_actual - 1][y_actual]
-                if posicion_vecino not in visitados:
-                    # si el vecino es la isla destino
-                    if posicion_vecino in islas and islas[posicion_vecino] == islas[destino]:
-                        mejor_valor = -float('inf')
-                        opc.append(mejor_valor)
-                        mejor_opcion = posicion_vecino
+                        # si el vecino no es una isla
+                        if posicion_vecino not in islas:
+                            distancia_vecino = abs(x_destino - x_vecino) + abs(y_destino - y_vecino)
+                            valor_vecino = distancia_vecino + abs(casilla_vecino)
+                            if valor_vecino < mejor_valor:
+                                mejor_valor = valor_vecino
+                                mejor_opcion = posicion_vecino
 
-                    # si el vecino no es una isla
-                    if posicion_vecino not in islas:
-                        distancia_vecino = abs(x_destino - x_vecino) + abs(y_destino - y_vecino)
-                        valor_vecino = distancia_vecino + abs(casilla_vecino)
-                        opc.append([valor_vecino, posicion_vecino])
-                        if valor_vecino < mejor_valor:
-                            mejor_valor = valor_vecino
-                            mejor_opcion = posicion_vecino
-
-                    # si el vecino es de la misma isla
-                    if posicion_vecino in islas and actual in islas and islas[posicion_vecino] == islas[actual]:
-                        distancia_vecino = abs(x_destino - x_vecino) + abs(y_destino - y_vecino)
-                        valor_vecino = distancia_vecino
-                        opc.append([valor_vecino, posicion_vecino])
-                        if valor_vecino < mejor_valor:
-                            mejor_valor = valor_vecino
-                            mejor_opcion = posicion_vecino
-
-            if 0 <= y_actual + 1 < len(matrix):
-                x_vecino, y_vecino = x_actual, y_actual + 1
-                posicion_vecino = (x_actual, y_actual + 1)
-                casilla_vecino = matrix[x_actual][y_actual + 1]
-                if posicion_vecino not in visitados:
-                    # si el vecino es la isla destino
-                    if posicion_vecino in islas and islas[posicion_vecino] == islas[destino]:
-                        mejor_valor = -float('inf')
-                        opc.append(mejor_valor)
-                        mejor_opcion = posicion_vecino
-
-                    # si el vecino no es una isla
-                    if posicion_vecino not in islas:
-                        distancia_vecino = abs(x_destino - x_vecino) + abs(y_destino - y_vecino)
-                        valor_vecino = distancia_vecino + abs(casilla_vecino)
-                        opc.append([valor_vecino, posicion_vecino])
-                        if valor_vecino < mejor_valor:
-                            mejor_valor = valor_vecino
-                            mejor_opcion = posicion_vecino
-
-                    # si el vecino es de la misma isla
-                    if posicion_vecino in islas and actual in islas and islas[posicion_vecino] == islas[actual]:
-                        distancia_vecino = abs(x_destino - x_vecino) + abs(y_destino - y_vecino)
-                        valor_vecino = distancia_vecino
-                        opc.append([valor_vecino, posicion_vecino])
-                        if valor_vecino < mejor_valor:
-                            mejor_valor = valor_vecino
-                            mejor_opcion = posicion_vecino
-
-            if 0 <= y_actual - 1 < len(matrix):
-                x_vecino, y_vecino = x_actual, y_actual - 1
-                posicion_vecino = (x_actual, y_actual - 1)
-                casilla_vecino = matrix[x_actual][y_actual - 1]
-                if posicion_vecino not in visitados:
-                    # si el vecino es la isla destino
-                    if posicion_vecino in islas and islas[posicion_vecino] == islas[destino]:
-                        mejor_valor = -float('inf')
-                        opc.append(mejor_valor)
-                        mejor_opcion = posicion_vecino
-
-                    # si el vecino no es una isla
-                    if posicion_vecino not in islas:
-                        distancia_vecino = abs(x_destino - x_vecino) + abs(y_destino - y_vecino)
-                        valor_vecino = distancia_vecino + abs(casilla_vecino)
-                        opc.append([valor_vecino, posicion_vecino])
-                        if valor_vecino < mejor_valor:
-                            mejor_valor = valor_vecino
-                            mejor_opcion = posicion_vecino
-
-                    # si el vecino es de la misma isla
-                    if posicion_vecino in islas and actual in islas and islas[posicion_vecino] == islas[actual]:
-                        distancia_vecino = abs(x_destino - x_vecino) + abs(y_destino - y_vecino)
-                        valor_vecino = distancia_vecino
-                        opc.append([valor_vecino, posicion_vecino])
-                        if valor_vecino < mejor_valor:
-                            mejor_valor = valor_vecino
-                            mejor_opcion = posicion_vecino
-            print(opc, mejor_valor, mejor_opcion)
+                        # si el vecino es de la misma isla
+                        if posicion_vecino in islas and actual in islas and islas[posicion_vecino] == islas[actual]:
+                            distancia_vecino = abs(x_destino - x_vecino) + abs(y_destino - y_vecino)
+                            valor_vecino = distancia_vecino
+                            if valor_vecino < mejor_valor:
+                                mejor_valor = valor_vecino
+                                mejor_opcion = posicion_vecino
             if not mejor_opcion:
                 break
             visitados[(x_actual, y_actual)] = 1
